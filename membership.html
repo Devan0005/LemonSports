@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Lemon Sports — Membership</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Poppins:wght@600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <h1 class="logo"><span class="word-lemon">Lemon</span> <span class="word-sports">sports</span></h1>
+      <p class="tag">Train Hard. Live Well.</p>
+    </div>
+    <nav id="mainNav">
+      <ul>
+        <li><a href="index.html">Home</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="membership-page" style="max-width:760px;margin:28px auto;padding:16px;">
+    <section class="membership-card" style="padding:22px;border-radius:12px;">
+      <h2 class="section-title" style="margin-bottom:8px;color:var(--accent)">Buy Membership</h2>
+
+      <div class="stepper">
+        <div class="progress" id="progressBar"><div class="progress-fill" style="width:0%"></div></div>
+        <div class="steps-dots" id="stepsDots"></div>
+      </div>
+
+      <form id="membershipForm" novalidate class="step-form">
+        <!-- Step 0: Gender -->
+        <div class="step" data-step="0">
+          <label class="big-label">What's your gender?</label>
+          <div class="choice-row">
+            <button type="button" class="choice" data-value="male">Male</button>
+            <button type="button" class="choice" data-value="female">Female</button>
+            <button type="button" class="choice" data-value="other">Other</button>
+          </div>
+        </div>
+
+        <!-- Step 1: Age -->
+        <div class="step" data-step="1">
+          <label class="big-label">How old are you?</label>
+          <input type="number" id="age" name="age" min="10" max="99" placeholder="Enter age" class="large-input" required>
+        </div>
+
+        <!-- Step 2: Height -->
+        <div class="step" data-step="2">
+          <label class="big-label">Height (cm)</label>
+          <input type="number" id="height" name="height" min="50" max="250" placeholder="e.g. 170" class="large-input" required>
+        </div>
+
+        <!-- Step 3: Weight -->
+        <div class="step" data-step="3">
+          <label class="big-label">Weight (kg)</label>
+          <input type="number" id="weight" name="weight" min="20" max="500" placeholder="e.g. 68" class="large-input" required>
+        </div>
+
+        <!-- Step 4: Goal -->
+        <div class="step" data-step="4">
+          <label class="big-label">What's your goal?</label>
+          <div class="choice-row">
+            <button type="button" class="choice" data-value="reduce">Reduce weight</button>
+            <button type="button" class="choice" data-value="increase">Increase weight</button>
+            <button type="button" class="choice" data-value="bulk">Make a bulk body</button>
+          </div>
+        </div>
+
+        <!-- Step 5: Duration -->
+        <div class="step" data-step="5">
+          <label class="big-label">Choose membership duration</label>
+          <div class="choice-row">
+            <button type="button" class="choice" data-value="1">1 month</button>
+            <button type="button" class="choice" data-value="3">3 months</button>
+            <button type="button" class="choice" data-value="6">6 months</button>
+            <button type="button" class="choice" data-value="12">1 year</button>
+          </div>
+        </div>
+
+        <!-- Step 6: Slot date -->
+        <div class="step" data-step="6">
+          <label class="big-label">Preferred date</label>
+          <input id="slotDate" name="slotDate" type="date" class="large-input" required>
+        </div>
+
+        <!-- Step 7: Slot time -->
+        <div class="step" data-step="7">
+          <label class="big-label">Preferred time slot</label>
+          <div class="choice-row">
+            <button type="button" class="choice" data-value="6-9">Morning 6–9 AM</button>
+            <button type="button" class="choice" data-value="12-2">Midday 12–2 PM</button>
+            <button type="button" class="choice" data-value="17-20">Evening 5–8 PM</button>
+          </div>
+        </div>
+
+        <!-- Step 8: Review & Buy -->
+        <div class="step" data-step="8">
+          <label class="big-label">Review & Buy</label>
+          <div id="reviewBox" class="review-box"></div>
+          <div style="margin-top:14px;display:flex;gap:12px;align-items:center;">
+            <button type="button" id="backBtn" class="btn btn-ghost">Back</button>
+            <button type="button" id="buyBtn" class="btn">Buy Membership</button>
+            <div id="price" style="margin-left:auto;font-weight:800;color:var(--accent)">Price: ₹0</div>
+          </div>
+        </div>
+
+      </form>
+
+      <div id="confirmBox" class="confirm-box" aria-live="polite"></div>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2023 Lemon Sports. All rights reserved.</p>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

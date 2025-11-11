@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Lemon Sports — Contact Us</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Poppins:wght@600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="contact-page">
+  <header>
+    <div class="brand">
+      <h1 class="logo"><span class="word-lemon">Lemon</span> <span class="word-sports">sports</span></h1>
+      <p class="tag">Train Hard. Live Well.</p>
+    </div>
+
+    <button id="navToggle" class="hamburger" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+    </button>
+
+    <nav id="mainNav">
+      <ul>
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li><a href="about.html" class="nav-link">About Us</a></li>
+        <li><a href="classes.html" class="nav-link">Classes</a></li>
+        <li><a href="contact.html" class="nav-link active">Contact Us</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main style="max-width:1100px;margin:28px auto;padding:16px;">
+    <section class="contact-hero">
+      <div class="contact-grid">
+        <div class="contact-card">
+          <h2>Get in touch</h2>
+          <p class="lead">Questions about membership, classes or booking? Send us a message — we’ll reply within 24 hours.</p>
+
+          <form id="contactForm" class="contact-form" novalidate>
+            <div class="row">
+              <input type="text" id="name" name="name" placeholder="Your name" required>
+              <input type="email" id="email" name="email" placeholder="Email address" required>
+            </div>
+
+            <div class="row">
+              <input type="tel" id="phone" name="phone" placeholder="Phone (optional)">
+              <select id="topic" name="topic" required>
+                <option value="">Select topic</option>
+                <option value="membership">Membership</option>
+                <option value="classes">Classes</option>
+                <option value="bookings">Slot Booking</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+
+            <textarea id="message" name="message" rows="5" placeholder="Write your message..." required></textarea>
+
+            <div class="row actions">
+              <button class="btn" type="submit">Send Message</button>
+              <div id="contactStatus" class="status"></div>
+            </div>
+          </form>
+
+          <div class="contact-meta">
+            <div class="meta-item">
+              <img src="assets/icon-phone.png" alt="phone">
+              <div>
+                <div class="meta-title">Call us</div>
+                <div class="meta-sub">+91 98765 43210</div>
+              </div>
+            </div>
+            <div class="meta-item">
+              <img src="assets/icon-mail.png" alt="email">
+              <div>
+                <div class="meta-title">Email</div>
+                <div class="meta-sub">hello@lemonsports.in</div>
+              </div>
+            </div>
+            <div class="meta-item">
+              <img src="assets/icon-location.png" alt="address">
+              <div>
+                <div class="meta-title">Address</div>
+                <div class="meta-sub">MG Road, Coimbatore</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="map-card">
+          <div class="map-placeholder" aria-hidden="true">
+            <a href="https://share.google/21AwcFXgpSba1MMhy" target="_blank" rel="noopener noreferrer" aria-label="Open location in Google Maps">
+              <img src="./assets/map-placeholder.png" alt="Map placeholder"
+                   onerror="this.onerror=null; this.src='./assets/map-fallback.png';" />
+              <div class="map-overlay">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" fill="#0b0b0b"/>
+                  <circle cx="12" cy="9" r="2.2" fill="#ffd400"/>
+                </svg>
+                <span>Open location</span>
+              </div>
+            </a>
+          </div>
+
+          <div class="hours-card">
+            <h4>Opening Hours</h4>
+            <ul>
+              <li>Mon — Fri: 5:00 AM — 10:00 PM</li>
+              <li>Sat — Sun: 7:00 AM — 8:00 PM</li>
+            </ul>
+            <a href="membership.html" class="btn btn-ghost">Join Now</a>
+          </div>
+
+          <div class="social-row">
+            <a class="social" href="#" aria-label="Whatsapp"><img src="assets/icon-wp.png" alt="whatsapp"></a>
+            <a class="social" href="#" aria-label="Instagram"><img src="assets/icon-ig.png" alt="instagram"></a>
+            <a class="social" href="#" aria-label="Facebook"><img src="assets/icon-fb.png" alt="facebook"></a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2023 Lemon Sports. All rights reserved.</p>
+  </footer>
+
+  <script>
+    // simple UI submit (no backend) — shows confirmation and saves locally
+    (function(){
+      const form = document.getElementById('contactForm');
+      const status = document.getElementById('contactStatus');
+      form && form.addEventListener('submit', function(e){
+        e.preventDefault();
+        const data = {
+          name: form.name.value,
+          email: form.email.value,
+          phone: form.phone.value,
+          topic: form.topic.value,
+          message: form.message.value,
+          createdAt: new Date().toISOString()
+        };
+        if(!data.name || !data.email || !data.topic || !data.message){
+          status.textContent = 'Please fill required fields.';
+          status.className = 'status error';
+          return;
+        }
+        let items = JSON.parse(localStorage.getItem('lemon_contacts')||'[]');
+        items.push(data);
+        localStorage.setItem('lemon_contacts', JSON.stringify(items));
+        status.textContent = 'Message sent — we will contact you shortly.';
+        status.className = 'status success';
+        form.reset();
+      });
+    })();
+  </script>
+</body>
+</html>

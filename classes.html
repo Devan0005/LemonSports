@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Lemon Sports — Classes</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Poppins:wght@600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="classes-page">
+  <header>
+    <div class="brand">
+      <h1 class="logo"><span class="word-lemon">Lemon</span> <span class="word-sports">sports</span></h1>
+      <p class="tag">Train Hard. Live Well.</p>
+    </div>
+
+    <button id="navToggle" class="hamburger" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+    </button>
+
+    <nav id="mainNav">
+      <ul>
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li><a href="about.html" class="nav-link">About Us</a></li>
+        <li><a href="classes.html" class="nav-link">Classes</a></li>
+        <li><a href="contact.html" class="nav-link">Contact Us</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main style="max-width:1100px;margin:28px auto;padding:16px;">
+    <section class="about-classes">
+      <h2>Our Classes</h2>
+      <p class="lead">Tap a card to flip for schedule.</p>
+
+      <div class="classes-grid flip-grid">
+        <article class="class-card flip-card" aria-label="Gym">
+          <div class="flip-inner">
+            <div class="flip-front class-icon">
+              <img src="assets/icon-gym.png" alt="Gym">
+            </div>
+            <div class="flip-back">
+              <h4>Gym</h4>
+              <p class="sched">Mon — Fri<br>5:00 AM – 1:00 PM<br>3:00 PM – 9:00 PM</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="class-card flip-card" aria-label="Badminton">
+          <div class="flip-inner">
+            <div class="flip-front class-icon">
+              <img src="assets/icon-badminton.png" alt="Badminton">
+            </div>
+            <div class="flip-back">
+              <h4>Badminton</h4>
+              <p class="sched">Mon — Fri<br>5:00 AM – 1:00 PM<br>3:00 PM – 9:00 PM</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="class-card flip-card" aria-label="Zumba">
+          <div class="flip-inner">
+            <div class="flip-front class-icon">
+              <img src="assets/icon-zumba.png" alt="Zumba">
+            </div>
+            <div class="flip-back">
+              <h4>Zumba</h4>
+              <p class="sched">Sat — Sun<br>8:00 AM – 11:00 AM<br>5:00 PM – 7:00 PM</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="class-card flip-card" aria-label="Silambam">
+          <div class="flip-inner">
+            <div class="flip-front class-icon">
+              <img src="assets/icon-silambam.png" alt="Silambam">
+            </div>
+            <div class="flip-back">
+              <h4>Silambam</h4>
+              <p class="sched">Sat — Sun<br>8:00 AM – 11:00 AM<br>5:00 PM – 7:00 PM</p>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2023 Lemon Sports. All rights reserved.</p>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
