@@ -1,0 +1,886 @@
+:root{
+  --accent: #ffd400; /* yellow accent */
+  --bg: #050505;     /* page background (near black) */
+  --surface: #0f0f0f;/* cards / panels */
+  --muted: #bfbfbf;  /* secondary text */
+  --text: #ffffff;   /* main text */
+  --glass: rgba(255,212,64,0.04);
+  --gap: 20px;
+}
+
+/* ===== Responsive / accessibility improvements ===== */
+
+/* fluid base font for all screens */
+html { font-size: clamp(14px, 1.6vw, 16px); }
+
+/* fluid spacing helper */
+:root{
+  --pad: clamp(12px, 1.4vw, 20px);
+}
+
+/* header / logo responsive */
+.brand h1.logo{
+  font-size: clamp(30px, 5.5vw, 56px); /* scales between phone and desktop */
+}
+header{
+  padding: clamp(10px, 2vw, 18px);
+  margin: 10px auto;
+}
+
+/* nav spacing and touch targets */
+nav ul{ gap: clamp(8px, 2vw, 14px); }
+nav a{
+  padding: clamp(8px, 1.2vw, 12px) clamp(10px, 1.6vw, 14px);
+  min-height:44px;         /* accessible tap target */
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+}
+
+/* ensure hamburger visible on small screens and nav occupies full width when open */
+.hamburger{ display:none; }
+@media (max-width:900px){
+  .hamburger{ display:block; }
+  #mainNav{ display:none; }
+  #mainNav.open{ display:block; position:fixed; left:12px; right:12px; top:82px; background:#0b0b0b; padding:12px; border-radius:12px; z-index:1200; box-shadow: 0 20px 60px rgba(0,0,0,0.8); }
+  #mainNav ul{ flex-direction:column; gap:12px; }
+  nav a{ width:100%; text-align:center; }
+}
+
+/* make page container padding responsive */
+main{ padding: 0 clamp(12px, 2vw, 24px); }
+
+/* responsive grids: use auto-fit to adapt column count */
+.cards,
+.facility-grid,
+.classes-grid,
+.flip-grid,
+.grid,
+.reviews-grid,
+.achieve-grid{
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+/* reduce card paddings on small screens and keep heights adaptive */
+.card, .facility-card, .class-card, .review-card, .achieve-card{
+  padding: clamp(10px, 1.6vw, 18px);
+  min-height: auto;
+}
+
+/* hero adjustments for small screens */
+.hero{
+  padding: clamp(20px, 4vw, 40px);
+  min-height: clamp(220px, 32vh, 360px);
+  background-position: center top;
+}
+.hero h2{ font-size: clamp(1.1rem, 2.4vw, 2rem); }
+
+/* contact page layout stack on small screens */
+@media (max-width:980px){
+  .contact-grid{ grid-template-columns: 1fr 360px; gap:18px; }
+}
+@media (max-width:760px){
+  .contact-grid{ grid-template-columns: 1fr; }
+  .map-placeholder{ height: 220px; }
+}
+
+/* map-overlay and clickable area improvements */
+.map-overlay{ left:12px; bottom:12px; padding:8px 10px; border-radius:10px; }
+.map-overlay span{ font-size: 0.95rem; }
+
+/* ensure map img fills and remains visible on small screens */
+.map-placeholder img{ object-position:center; }
+
+/* flip / classes cards: responsive size and touch behaviour */
+.flip-inner{
+  height: clamp(180px, 28vh, 260px);
+  max-width: 100%;
+}
+.classes-page .flip-inner, .flip-inner{ max-width: 320px; margin: 0 auto; }
+
+/* improve focus states for keyboard users */
+a:focus, button:focus, input:focus, select:focus, textarea:focus {
+  outline: 3px solid rgba(255,212,64,0.18);
+  outline-offset: 3px;
+}
+
+/* make buttons full width on small screens for easier tapping */
+@media (max-width:640px){
+  .btn{ width:100%; text-align:center; padding:12px 16px; }
+  nav a{ font-size: 0.95rem; }
+  .facility-icon{ width:80px; height:80px; }
+  .class-icon{ width:96px; height:96px; }
+  .facility-icon img, .class-icon img{ width:48px; height:48px; }
+}
+
+/* lighter shadows on very small screens for performance and readability */
+@media (max-width:420px){
+  .card, .contact-card, .map-card{ box-shadow: 0 8px 20px rgba(0,0,0,0.5); }
+}
+
+/* preserve image aspect ratio and responsive sizing */
+img{ max-width:100%; height:auto; display:block; }
+
+/* final small tweak: increase grid gap on large screens for breathing space */
+@media (min-width:1200px){
+  .cards, .facility-grid, .classes-grid, .flip-grid{ gap:28px; }
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  font-family: 'Inter', system-ui, Arial, sans-serif;
+  background: linear-gradient(180deg, var(--bg) 0%, #070707 100%);
+  color: var(--text);
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  padding: 18px;
+}
+
+/* Header */
+header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  padding:14px 20px;
+  max-width:1100px;
+  margin:12px auto;
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  border: 1px solid rgba(255,255,255,0.03);
+  border-radius:10px;
+}
+
+/* Logo: gold metallic look similar to provided image */
+.brand h1{
+  font-family: 'Poppins', 'Montserrat', sans-serif;
+  margin:0 0 4px 0;
+}
+
+/* main logo style */
+.brand h1.logo{
+  font-weight:800;
+  font-size:56px;            /* desktop size */
+  line-height:1;
+  letter-spacing:1px;
+  display:inline-block;
+  position:relative;
+  -webkit-text-stroke: 0.8px rgba(0,0,0,0.45);
+  background: linear-gradient(180deg, #fff3b0 0%, #ffd54a 35%, #c78b00 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow:
+    0 1px 0 rgba(255,255,255,0.12),   /* subtle top highlight */
+    0 4px 8px rgba(0,0,0,0.55),       /* deep drop shadow */
+    0 10px 30px rgba(0,0,0,0.55);
+  transform: translateZ(0);
+}
+
+/* smaller 'sports' to match signage style */
+.brand h1.logo .word-sports{
+  font-weight:700;
+  font-size:0.55em;
+  text-transform:lowercase;
+  opacity:0.95;
+  display:inline-block;
+  vertical-align:baseline;
+  margin-left:6px;
+  /* slight darker fill so 'sports' reads as part of the sign */
+  background: linear-gradient(180deg, #fff0a8 0%, #f6c93a 40%, #a66f00 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -webkit-text-stroke: 0.6px rgba(0,0,0,0.45);
+  text-shadow: 0 2px 6px rgba(0,0,0,0.55);
+}
+
+/* nav */
+nav ul{
+  list-style:none;
+  display:flex;
+  gap:14px;
+  align-items:center;
+}
+nav a{
+  text-decoration:none;
+  color:var(--text);
+  padding:8px 12px;
+  border-radius:8px;
+  transition:all .18s ease;
+  font-weight:600;
+  background:transparent;
+  border: 1px solid transparent;
+}
+nav a:hover{
+  color: #0b0b0b;
+  background: var(--accent);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.6);
+}
+
+/* nav link selected state */
+nav a.nav-link.active{
+  background: var(--accent);
+  color: #0b0b0b;
+  box-shadow: 0 10px 26px rgba(255,212,64,0.12);
+  border-radius:8px;
+  padding:8px 12px;
+  font-weight:800;
+}
+
+/* make sure non-active links keep original spacing */
+nav ul { align-items:center; }
+
+/* hamburger for small screens */
+.hamburger{display:none;background:none;border:0;cursor:pointer}
+.hamburger span{display:block;width:22px;height:2px;background:var(--text);margin:4px 0;border-radius:2px}
+
+/* Hero */
+.hero{
+  position:relative;
+  max-width:1200px;
+  margin:0 auto;
+  border-radius:12px;
+  overflow:hidden;
+  /* blended hero: dark gradient on top of the image for consistent look */
+  background-image:
+    linear-gradient(180deg, rgba(6,6,6,0.55), rgba(6,6,6,0.45)),
+    url("../assets/hero.jpg"); /* ensure file is at gym-website/assets/hero.jpg */
+  background-size:cover;
+  background-position:center;
+  background-repeat:no-repeat;
+  background-blend-mode: overlay;
+  color:var(--text);
+  min-height:340px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:40px 24px;
+  border: 1px solid rgba(255,255,255,0.03);
+}
+
+/* lighter vignette so underlying image is still visible */
+.hero::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background: linear-gradient(180deg, rgba(0,0,0,0.25), rgba(0,0,0,0.35));
+  pointer-events:none;
+}
+
+/* ensure hero content sits above overlays */
+.hero-inner{position:relative;text-align:center;max-width:900px;z-index:2}
+.hero h2{font-size:2rem;margin-bottom:8px;letter-spacing:0.4px;color:var(--text)}
+.hero p{opacity:0.95;margin-bottom:16px;color:var(--muted)}
+.btn{
+  display:inline-block;
+  background:var(--accent);
+  color:#0b0b0b;
+  padding:10px 18px;
+  border-radius:10px;
+  text-decoration:none;
+  font-weight:700;
+  transition:transform .15s ease, box-shadow .15s ease;
+}
+.btn:hover{transform:translateY(-3px);box-shadow:0 14px 34px rgba(255,212,64,0.14)}
+.btn-ghost{
+  background:transparent;
+  border:2px solid rgba(255,255,255,0.06);
+  color:var(--text);
+}
+
+/* main container */
+main{max-width:1100px;margin:26px auto;padding:0 16px}
+
+/* services */
+.services h3{
+  margin-bottom:12px;
+  color:var(--text);
+  font-size:1.25rem;
+  text-align:center;   /* centered title */
+  width:100%;
+}
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.card{
+  background: linear-gradient(180deg, var(--surface), #0b0b0b);
+  padding:18px;border-radius:12px;
+  box-shadow: 0 8px 28px rgba(0,0,0,0.6);
+  transition:transform .18s ease, box-shadow .18s ease;
+  text-align:center;
+  border: 1px solid rgba(255,255,255,0.03);
+}
+.card:hover{transform:translateY(-6px);box-shadow:0 28px 60px rgba(0,0,0,0.7)}
+.card .icon{
+  width:56px;height:56px;margin:0 auto 12px;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;
+  background: linear-gradient(135deg, rgba(255,212,64,0.12), rgba(255,212,64,0.06));
+  color:var(--accent);font-size:20px
+}
+.card h4{margin-bottom:6px;color:var(--text)}
+.card p{font-size:0.95rem;color:var(--muted)}
+
+/* gallery */
+.gallery{margin-top:22px}
+.gallery h3{margin-bottom:12px;color:var(--text)}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.grid img{
+  width:100%;height:160px;object-fit:cover;border-radius:10px;display:block;
+  filter: contrast(0.95) saturate(1.05) brightness(0.9);
+  border: 1px solid rgba(255,255,255,0.03);
+}
+
+/* cta */
+.cta{
+  margin-top:22px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  padding:20px;border-radius:12px;display:flex;align-items:center;justify-content:space-between;gap:16px;
+  box-shadow:0 10px 30px rgba(0,0,0,0.6);
+  border: 1px solid rgba(255,255,255,0.03);
+}
+.cta h3{margin:0;color:var(--text)}
+.cta p{margin:0;color:var(--muted)}
+
+/* footer */
+footer{max-width:1100px;margin:20px auto;text-align:center;color:var(--muted);font-size:0.9rem;padding-bottom:24px}
+
+/* membership page styles */
+.membership-page label{display:block;font-weight:600;margin-bottom:6px;color:var(--muted)}
+.membership-page .form-row{margin-bottom:12px}
+.membership-page input[type="number"],
+.membership-page input[type="date"],
+.membership-page select{
+  width:100%;
+  padding:10px 12px;
+  border-radius:8px;
+  border:1px solid rgba(255,255,255,0.04);
+  background:transparent;
+  color:var(--text);
+}
+.membership-page .btn{background:var(--accent);color:#0b0b0b;padding:10px 16px;border-radius:8px;font-weight:700}
+
+/* Stepper / sequential input styles */
+.step-form{position:relative;overflow:hidden}
+.step{display:none;padding:14px 6px;transition:transform .35s cubic-bezier(.2,.9,.2,1),opacity .25s ease}
+.step.active{display:block;opacity:1;transform:translateX(0)}
+.step.left{transform:translateX(-20px);opacity:0.2}
+.step.right{transform:translateX(20px);opacity:0.2}
+.step.invalid{animation:shake .5s}
+
+/* progress */
+.stepper{margin:12px 0 18px}
+.progress{height:8px;background:rgba(255,255,255,0.04);border-radius:6px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),#ffd86b);width:0;transition:width .35s ease}
+.steps-dots{display:flex;gap:6px;margin-top:8px;justify-content:center}
+.steps-dots .dot{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,0.06)}
+.steps-dots .dot.active{background:var(--accent);box-shadow:0 6px 18px rgba(255,212,64,0.12)}
+
+/* big label & inputs */
+.big-label{font-size:1.05rem;font-weight:700;margin-bottom:10px;color:var(--text);display:block}
+.large-input{width:100%;padding:14px 16px;border-radius:10px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:var(--text);font-size:1rem}
+.choice-row{display:flex;flex-wrap:wrap;gap:10px}
+.choice{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--text);padding:12px 18px;border-radius:12px;font-weight:700;cursor:pointer;min-width:110px;text-align:center;transition:transform .12s ease,box-shadow .12s ease}
+.choice:hover{transform:translateY(-4px)}
+.choice.selected{background:linear-gradient(180deg,rgba(255,212,64,0.12),rgba(255,212,64,0.06));border-color:rgba(255,212,64,0.18);box-shadow:0 10px 30px rgba(0,0,0,0.6);color:var(--accent)}
+
+/* review & confirm */
+.review-box{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:12px;border-radius:8px;border:1px solid rgba(255,255,255,0.03)}
+.review-row{padding:6px 0;border-bottom:1px dashed rgba(255,255,255,0.02);color:var(--muted)}
+.confirm-box{margin-top:14px}
+.confirm-inner{padding:14px;border-radius:10px;background:linear-gradient(180deg,rgba(255,212,64,0.06),rgba(255,255,255,0.01));border:1px solid rgba(255,212,64,0.08)}
+.confirm-inner h3{margin:0 0 6px;color:var(--accent)}
+.muted{color:var(--muted);font-size:0.95rem}
+
+/* small animations */
+@keyframes shake{
+  10%{transform:translateX(-6px)}
+  30%{transform:translateX(6px)}
+  50%{transform:translateX(-4px)}
+  70%{transform:translateX(4px)}
+  100%{transform:translateX(0)}
+}
+
+/* Responsive */
+@media (max-width:980px){
+  .cards{grid-template-columns:repeat(2,1fr)}
+  .grid{grid-template-columns:repeat(2,1fr)}
+  .hero h2{font-size:1.6rem}
+}
+@media (max-width:640px){
+  header{padding:12px}
+  .hamburger{display:block}
+  #mainNav{display:none}
+  #mainNav.open{display:block;position:absolute;left:16px;right:16px;top:78px;background:#0b0b0b;padding:12px;border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,0.7)}
+  .cards{grid-template-columns:1fr}
+  .grid{grid-template-columns:1fr 1fr}
+  .cta{flex-direction:column;align-items:flex-start}
+  .hero{min-height:260px;padding:28px}
+}
+
+/* Facilities grid (matches dark theme with yellow accents like your reference) */
+.facilities{margin-top:22px}
+.facilities h3{margin-bottom:18px;color:var(--text);text-align:center;font-size:1.4rem}
+.facility-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:22px;
+  align-items:start;
+}
+.facility-card{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:12px;
+  padding:18px;
+  border-radius:14px;
+  background:transparent;
+  border:1px solid rgba(255,255,255,0.03);
+  transition:transform .18s ease, box-shadow .18s ease, background .18s ease;
+  text-align:center;
+}
+.facility-card:hover{
+  transform:translateY(-8px);
+  background: linear-gradient(180deg, rgba(255,212,64,0.05), rgba(255,212,64,0.02));
+  box-shadow:0 22px 48px rgba(0,0,0,0.75);
+  border-color: rgba(255,212,64,0.14);
+}
+
+/* facility icon image styles */
+.facility-icon{
+  width:96px;
+  height:96px;
+  padding:14px;                      /* space around icon so it doesn't touch edges */
+  border-radius:18px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  /* strong gold background so icons stand out on black page */
+  background: linear-gradient(180deg, #ffd400 0%, #ffbf00 100%);
+  border:1px solid rgba(0,0,0,0.22);
+  box-shadow: 0 10px 28px rgba(0,0,0,0.65), inset 0 1px 0 rgba(255,255,255,0.15);
+  color:#0b0b0b;                     /* used when inline SVG uses currentColor */
+}
+
+/* Make bitmap icons visible and, for white icons, convert them to dark for contrast.
+   If your icons are already colored, remove the filter line. */
+.facility-icon img{
+  width:48px;
+  height:48px;
+  object-fit:contain;
+  display:block;
+  /* convert white/monochrome icons into dark for best contrast on yellow */
+  filter: brightness(0) saturate(100%) contrast(120%);
+  -webkit-filter: brightness(0) saturate(100%) contrast(120%);
+  /* subtle drop shadow for pop */
+  filter: drop-shadow(0 6px 14px rgba(0,0,0,0.45)) brightness(0) saturate(100%) contrast(120%);
+}
+
+/* Hover state — keep icon visible and add a soft glow */
+.facility-card:hover .facility-icon{
+  transform:translateY(-6px);
+  box-shadow: 0 22px 48px rgba(0,0,0,0.75), 0 6px 18px rgba(255,191,0,0.06);
+}
+
+/* updated facility label font & styling */
+.facility-label{
+  margin-top:8px;
+  font-family: 'Poppins', 'Oswald', 'Montserrat', Arial, sans-serif;
+  font-weight:700;
+  font-size:0.95rem;
+  letter-spacing:0.8px;
+  text-transform:uppercase;
+  color:var(--muted);
+  text-align:center;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.6);
+  line-height:1.1;
+}
+
+/* About page: classes, achievements, reviews */
+.about-classes{margin-top:18px}
+.about-classes h2{color:var(--accent);text-align:center;margin-bottom:6px}
+.about-classes .lead{color:var(--muted);text-align:center;margin-bottom:18px}
+
+/* classes grid */
+.classes-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:18px;
+  margin-top:10px;
+}
+.class-card{
+  background:linear-gradient(180deg,var(--surface),#0b0b0b);
+  padding:14px 12px;border-radius:12px;text-align:center;border:1px solid rgba(255,255,255,0.03);
+  transition:transform .16s ease,box-shadow .16s ease;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:8px;
+  min-height:140px;
+  justify-content:center;
+}
+.class-card:hover{transform:translateY(-8px);box-shadow:0 20px 40px rgba(0,0,0,0.6);border-color:rgba(255,212,64,0.12)}
+
+.class-icon{
+  width:110px;
+  height:110px;
+  margin:0 auto 6px;
+  border-radius:18px;
+  background:linear-gradient(180deg,#ffd400,#ffbf00);
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 10px 20px rgba(0,0,0,0.6);
+  padding:12px;
+}
+.class-icon img{
+  width:64px;
+  height:64px;
+  object-fit:contain;
+  filter: brightness(0) saturate(100%) contrast(120%);
+}
+
+/* class title */
+.class-card h4{
+  margin:0;
+  font-size:1rem;
+  font-weight:800;
+  color:var(--text);
+  letter-spacing:0.6px;
+  text-transform:uppercase;
+}
+
+/* Achievements - center the cards */
+.achievements{
+  margin-top:22px;
+  text-align:center; /* ensure headings and content center */
+}
+.achievements h2{color:var(--accent);text-align:center;margin-bottom:12px}
+
+/* center the achievement grid and limit width so items stay centered */
+.achieve-grid{
+  display:flex;
+  gap:18px;
+  justify-content:center;   /* center horizontally */
+  align-items:stretch;
+  margin:0 auto;            /* center container */
+  max-width:820px;
+  padding:0 12px;
+}
+.achieve-card{
+  flex:0 0 200px;          /* consistent card width */
+  margin:0;
+}
+
+/* Reviews - center the reviews and keep cards aligned nicely */
+.reviews{
+  margin-top:22px;
+  text-align:center;
+}
+.reviews h2{color:var(--accent);text-align:center;margin-bottom:12px}
+
+/* center review grid and its items */
+.reviews-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:16px;
+  justify-items:center;     /* center each card within its grid cell */
+  margin:0 auto;            /* center grid container */
+  max-width:980px;
+  padding:0 12px;
+}
+.review-card{
+  width:100%;
+  max-width:320px;         /* keep cards uniform and centered */
+  margin:0;
+  text-align:left;         /* keep review text left-aligned inside card for readability */
+  display:flex;
+  flex-direction:column;
+}
+
+/* Flip card layout */
+.flip-grid{ /* reuse classes-grid layout but ensure spacing for flip effect */
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:20px;
+  margin-top:12px;
+}
+.flip-card{ perspective:1200px; display:flex; align-items:stretch; justify-content:center; }
+.flip-inner{
+  width:100%;
+  max-width:280px;
+  height:220px;
+  position:relative;
+  transition: transform .7s cubic-bezier(.2,.9,.2,1);
+  transform-style:preserve-3d;
+  border-radius:14px;
+}
+.flip-card:hover .flip-inner,
+.flip-card.flipped .flip-inner{
+  transform: rotateY(180deg);
+}
+
+/* front and back panels */
+.flip-front, .flip-back{
+  position:absolute;
+  inset:0;
+  backface-visibility:hidden;
+  -webkit-backface-visibility:hidden;
+  border-radius:14px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  padding:18px;
+  box-shadow:0 10px 26px rgba(0,0,0,0.6);
+  border:1px solid rgba(255,255,255,0.03);
+}
+
+/* front uses existing class-icon styles (image centered) */
+.flip-front.class-icon{
+  background:linear-gradient(180deg,#ffd400,#ffbf00);
+  padding:18px;
+  border-radius:16px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow: 0 18px 40px rgba(0,0,0,0.7), inset 0 2px 0 rgba(255,255,255,0.04);
+  border: 1px solid rgba(0,0,0,0.18);
+}
+.flip-front.class-icon img{ width:80px; height:80px; object-fit:contain; filter: brightness(0) saturate(100%) contrast(120%); }
+
+/* back panel styling */
+.flip-back{
+  transform: rotateY(180deg);
+  background: linear-gradient(180deg,var(--surface),#0b0b0b);
+  color:var(--text);
+  text-align:center;
+  padding:18px;
+}
+.flip-back h4{
+  margin:0 0 8px 0;
+  font-size:1.05rem;
+  color:var(--accent);
+  letter-spacing:0.6px;
+  text-transform:uppercase;
+}
+.flip-back .sched{
+  margin:0;
+  color:var(--muted);
+  font-weight:600;
+  line-height:1.4;
+}
+
+/* Classes page — different flip style and look (scoped to .classes-page) */
+.classes-page .flip-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:20px;
+  margin-top:12px;
+}
+
+/* Override classes-page flip to use the About-page (horizontal Y) flip style */
+.classes-page .flip-card{ perspective:1200px; display:flex; align-items:stretch; justify-content:center; }
+.classes-page .flip-inner{
+  width:100%;
+  max-width:280px;
+  height:220px;
+  position:relative;
+  transition: transform .7s cubic-bezier(.2,.9,.2,1);
+  transform-style:preserve-3d;
+  border-radius:14px;
+}
+.classes-page .flip-card:hover .flip-inner,
+.classes-page .flip-card.flipped .flip-inner{
+  transform: rotateY(180deg);
+}
+
+/* front and back panels */
+.classes-page .flip-front, .classes-page .flip-back{
+  position:absolute;
+  inset:0;
+  backface-visibility:hidden;
+  -webkit-backface-visibility:hidden;
+  border-radius:14px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  padding:18px;
+  box-shadow:0 10px 26px rgba(0,0,0,0.6);
+  border:1px solid rgba(255,255,255,0.03);
+}
+
+/* front uses gold plate and centered icon */
+.classes-page .flip-front.class-icon{
+  background: linear-gradient(180deg,#ffd400 0%, #ffbf00 100%);
+  padding:18px;
+  border-radius:12px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow: 0 18px 40px rgba(0,0,0,0.7), inset 0 2px 0 rgba(255,255,255,0.04);
+  border: 1px solid rgba(0,0,0,0.18);
+}
+.classes-page .flip-front.class-icon img{
+  width:80px;
+  height:80px;
+  object-fit:contain;
+  display:block;
+  filter: none;
+}
+
+/* back panel */
+.classes-page .flip-back{
+  transform: rotateY(180deg);
+  background: linear-gradient(180deg,var(--surface),#0b0b0b);
+  color:var(--text);
+  text-align:center;
+  padding:18px;
+}
+.classes-page .flip-back h4{
+  margin:0 0 8px 0;
+  font-size:1.05rem;
+  color:var(--accent);
+  letter-spacing:0.6px;
+  text-transform:uppercase;
+}
+.classes-page .flip-back .sched{
+  margin:0;
+  color:var(--muted);
+  font-weight:600;
+  line-height:1.4;
+}
+
+/* responsive */
+@media (max-width:980px){
+  .classes-page .flip-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media (max-width:640px){
+  .classes-page .flip-grid{grid-template-columns:1fr}
+  .classes-page .flip-inner{height:200px}
+  .classes-page .flip-front.class-icon img{width:64px;height:64px}
+}
+
+/* Contact page styles (append) */
+.contact-page .contact-hero{margin-top:18px}
+.contact-grid{
+  display:grid;
+  grid-template-columns:1fr 420px;
+  gap:24px;
+  align-items:start;
+}
+.contact-card{
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  padding:24px;
+  border-radius:14px;
+  border:1px solid rgba(255,255,255,0.03);
+  box-shadow: 0 18px 46px rgba(0,0,0,0.6);
+}
+.contact-card h2{color:var(--accent);margin-bottom:6px}
+.contact-card .lead{color:var(--muted);margin-bottom:12px}
+
+/* form */
+.contact-form .row{display:flex;gap:12px;margin-bottom:12px}
+.contact-form input[type="text"],
+.contact-form input[type="email"],
+.contact-form input[type="tel"],
+.contact-form select,
+.contact-form textarea{
+  width:100%;
+  padding:12px 14px;
+  border-radius:10px;
+  border:1px solid rgba(255,255,255,0.04);
+  background:transparent;
+  color:var(--text);
+  font-size:0.95rem;
+}
+.contact-form textarea{resize:vertical}
+.contact-form .actions{align-items:center}
+.contact-form .status{margin-left:12px;font-weight:700;color:var(--muted)}
+.status.success{color:var(--accent)}
+.status.error{color:#ff6b6b}
+
+/* contact meta tiles */
+.contact-meta{display:flex;gap:12px;margin-top:18px;flex-wrap:wrap}
+.meta-item{display:flex;gap:10px;align-items:center;background:transparent;padding:8px 10px;border-radius:10px;border:1px solid rgba(255,255,255,0.02)}
+.meta-item img{width:28px;height:28px;object-fit:contain;filter:brightness(0) saturate(100%) contrast(120%)}
+.meta-title{font-weight:800;color:var(--text);font-size:0.95rem}
+.meta-sub{color:var(--muted);font-weight:700;font-size:0.9rem}
+
+/* right column */
+.map-card{display:flex;flex-direction:column;gap:14px}
+.map-placeholder{ position:relative; height:260px; border-radius:12px; overflow:hidden; border:1px solid rgba(255,255,255,0.03); background:linear-gradient(180deg,rgba(0,0,0,0.35),rgba(0,0,0,0.45)); display:flex; align-items:center; justify-content:center; }
+
+/* make map image visible on the dark theme and provide a brighter / sharper presentation */
+.map-placeholder{ background: linear-gradient(180deg, rgba(0,0,0,0.06), rgba(0,0,0,0.08)); }
+.map-placeholder img{
+  position:relative;
+  z-index:1;                 /* put image above placeholder background */
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  opacity:1 !important;
+  filter: none !important;   /* remove heavy darkening */
+  transition:transform .18s ease, filter .18s ease;
+}
+
+/* keep overlay visible above image */
+.map-overlay{ z-index:2; position:absolute; }
+
+/* if a background gradient on .map-placeholder is too dark, reduce it */
+.map-placeholder{
+  background: linear-gradient(180deg, rgba(0,0,0,0.06), rgba(0,0,0,0.08));
+}
+.map-placeholder img{
+  position:relative;
+  z-index:1;                 /* put image above placeholder background */
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  opacity:1 !important;
+  filter: none !important;   /* remove heavy darkening */
+  transition:transform .18s ease, filter .18s ease;
+}
+
+/* keep overlay visible above image */
+.map-overlay{ z-index:2; position:absolute; }
+
+/* if a background gradient on .map-placeholder is too dark, reduce it */
+.map-placeholder{
+  background: linear-gradient(180deg, rgba(0,0,0,0.06), rgba(0,0,0,0.08));
+}
+
+/* Make the "Open location" label use the site accent (yellow) */
+.map-overlay span{
+  color: var(--accent);
+  font-weight:800;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.45);
+}
+
+/* Contact inputs: white border and subtle glow when focused */
+.contact-form input[type="text"],
+.contact-form input[type="email"],
+.contact-form input[type="tel"],
+.contact-form select,
+.contact-form textarea{
+  transition: border-color .14s ease, box-shadow .14s ease, transform .12s ease;
+}
+
+.contact-form input:focus,
+.contact-form select:focus,
+.contact-form textarea:focus{
+  outline: none;
+  border: 1px solid #ffffff;           /* white border on focus */
+  box-shadow: 0 8px 20px rgba(255,212,64,0.06); /* soft gold glow */
+  transform: translateY(-1px);
+}
+
+/* yellow outlined box around the map icon (no filled background) */
+.map-overlay svg{
+  width:18px;
+  height:18px;
+  display:inline-block;
+  padding:8px;                          /* space inside the box */
+  border-radius:8px;                    /* rounded rectangle */
+  border:2px solid var(--accent);       /* yellow outline */
+  background:transparent;               /* no fill so it's just a line box */
+  box-shadow: 0 6px 16px rgba(0,0,0,0.45);
+  vertical-align:middle;
+  box-sizing:content-box;
+}
